@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Text, View } from 'react-native'
-import styles from "../component/Css/CssForAl"
+import styles from "./Css/CssForAl"
 
 export default class SubTitle extends Component {
   render() {

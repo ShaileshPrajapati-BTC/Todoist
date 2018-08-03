@@ -22,12 +22,33 @@ export default StyleSheet.create ({
         paddingBottom : 10,
         fontSize:15,
         paddingLeft:20,
+        color:"#ffffff"
     },
     addButton:{
-        width :40,
+        borderRadius:50,
+        paddingTop:30,
         height :40,
-        backgroundColor:"#0652DD"
+        width:40,
+        backgroundColor:"#0652DD",
            
-    }
+    },
+    headerStyle:{
+        flex:1,
+        height:60,
+        position:'absolute',
+        borderWidth:1,
+        height:80,
+        backgroundColor:"#dcdde1",
+        flexDirection :'row',
+    },
+    mainTitle :{
+        width:60,
+        padding:10,
+        borderWidth:1,
+        alignContent:"center",
+        justifyContent:'center',
+    },
+    
+
     
 });

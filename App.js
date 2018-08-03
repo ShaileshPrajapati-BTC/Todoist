@@ -7,17 +7,25 @@
  */
 
 import React, {Component} from 'react';
-import { View, Text} from 'react-native';
-import MainList from './src/component/MainList'
-
+import { View, Text,createStackNavigator} from 'react-native';
+import {DrawerNavigator} from 'react-navigation'
+import  HomeScreen  from './src/component/HomeScreen';
+import CreateForm from './src/component/SecondScreen/CreateForm'
+import Navigation from './src/component/AllNavigation'
 
 export default class App extends Component {
   render() {
     return (
-      <View>
-        <MainList />
-        
-      </View>
-    );
+        <Navigation />  
+    );  
   }
 }
+/* 
+const MyApp = createStackNavigator("Home",{
+  Home: HomeScreen,
+  Form: CreateForm
+  },
+  {
+    InitialRouteName : 'Home',
+  }
+); */

@@ -10,7 +10,7 @@ export class MainList extends Component {
         <View>
             <FlatList
                 data = {data.Users}
-                renderItem ={({item}) =>  <ListItem name= {item.name}/> }
+                renderItem ={({item}) =>  <ListItem  /> }
                     />
         </View>
          

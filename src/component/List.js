@@ -5,8 +5,8 @@ import Title from './Title'
 import SubTitle from './SubTitle'
 
 export class ListItem extends Component {
-    constructor(props){
-        super(props);
+    constructor(){
+        super();
         this.state = {
             title :'',
             subtitle : '',
@@ -17,8 +17,8 @@ export class ListItem extends Component {
     return (
         <TouchableOpacity style ={styles.row}>
             <View>
-                <Title style ={styles.row}>Hello </Title>
-                <SubTitle > hello</SubTitle>
+                <Title style ={styles.row}></Title>
+                <SubTitle style={styles.subTitle}></SubTitle>
             </View>
         </TouchableOpacity>
         
