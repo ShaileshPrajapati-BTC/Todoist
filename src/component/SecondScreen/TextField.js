@@ -9,13 +9,11 @@ export class TextFiels extends Component {
 
     render() {
     return (
-        <View>
             <TextInput 
-                style={design.input}
+                style = {this.props.style}
                 placeholder ={this.props.placeholder}
             />
 
-        </View>
     )
   }
 }

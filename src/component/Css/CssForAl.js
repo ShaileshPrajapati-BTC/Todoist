@@ -7,7 +7,8 @@ export default StyleSheet.create ({
     },
     row:{
         backgroundColor : "#8c7ae6",
-        borderWidth :1,
+        margin:10,
+        borderRadius:5,
     },
     title:{
         paddingTop :10,

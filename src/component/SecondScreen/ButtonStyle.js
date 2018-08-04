@@ -1,18 +1,23 @@
 import React, { Component } from 'react'
-import { Text, View,Button } from 'react-native'
-import design from '../Css/SecondCss'
+import { Text, View,Button ,TouchableOpacity} from 'react-native'
+import { Right } from 'native-base';
 
 export class ButtonStyle extends Component {
     constructor(props){
-        super(props) 
+        super(props);
     }
-  render() {
-    return (
-      <View>
-          <Button style={design.addButton} ><Text style={design.buttonText}>{this.props.name}</Text></Button>
-      </View>
-    )
-  }
+    render() {
+      return (
+            <TouchableOpacity
+              style = {this.props.style}
+              title = {this.props.title}
+              >
+                <Text>
+                    {this.props.title}
+                </Text>
+              </TouchableOpacity>
+      )
+    }
 }
 
 export default ButtonStyle

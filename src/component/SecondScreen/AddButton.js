@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+ import React, { Component } from 'react'
 import { Text, View,TouchableOpacity } from 'react-native'
 import styles from '../Css/CssForAl' 
 

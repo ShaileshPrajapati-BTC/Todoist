@@ -20,7 +20,7 @@ export class Allheader extends Component {
         </Body>
         <Right>
             <Button transparent onPress={() => this.props.navigateEvent.navigate('Form')}>
-                <Text>Add</Text>
+               <Icon name="add" />
             </Button>
         </Right>
     </Header>
