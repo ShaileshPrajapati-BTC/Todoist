@@ -6,7 +6,7 @@ export default StyleSheet.create ({
         flex : 1
     },
     row:{
-        backgroundColor : "#8c7ae6",
+        backgroundColor : "#dfe4ea",
         margin:10,
         borderRadius:5,
     },
@@ -16,14 +16,14 @@ export default StyleSheet.create ({
          paddingLeft : 20,
          fontStyle: "normal",
          fontWeight :"bold",
-        color: "#ffffff"
+        color: "black"
     },
     subTitle:{
         paddingTop:5,
         paddingBottom : 10,
         fontSize:15,
         paddingLeft:20,
-        color:"#ffffff"
+        color:"black"
     },
     addButton:{
         borderRadius:50,
@@ -49,6 +49,21 @@ export default StyleSheet.create ({
         alignContent:"center",
         justifyContent:'center',
     },
+    TouchableOpacityStyle:{
+        position: 'absolute',
+        width: 50,
+        height: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        right: 50,
+        bottom: 100,
+      },
+      FloatingButtonStyle: {
+  
+        resizeMode: 'contain',
+        width: 50,
+        height: 50,
+      }
     
 
     

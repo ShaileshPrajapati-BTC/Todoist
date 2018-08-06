@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { TouchableOpacity,View ,Text } from 'react-native'
+import { TouchableOpacity,View} from 'react-native'
 import styles from "./Css/CssForAl"
 import Title from './Title'
 import SubTitle from './SubTitle'

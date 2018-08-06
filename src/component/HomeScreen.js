@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { Text, View } from 'react-native'
 import MainList from './MainList'
-import {DrawerNavigator} from 'react-navigation'
 import Allheader from './header'
 import { Container,Drawer } from 'native-base';
 
 export class HomeScreen extends Component {
+ 
   constructor(props){
     super(props)
   }  
@@ -17,7 +17,7 @@ export class HomeScreen extends Component {
 
     return (
     <Container>
-        <Allheader navigateEvent= {this.props.navigation} />
+        <Allheader  navigateEvent= {this.props.navigation} />
         <MainList />
     </Container>
     )

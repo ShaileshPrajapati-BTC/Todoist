@@ -9,6 +9,8 @@ const Navigation =  StackNavigator(
         screen:HomeScreen,
         navigationOptions:{
             header:null,
+            drawerPosition:'Left',
+            drawerWidth:300,
         }
     },
     Form:{
