@@ -1,24 +1,38 @@
 import React, { Component } from 'react'
-import { Text, View } from 'react-native'
+import { Text, View,TouchableOpacity,Image  } from 'react-native'
 import MainList from './MainList'
-import Allheader from './header'
+import AllHeader from './header'
+import styles from './Css/CssForAl'
 import { Container,Drawer } from 'native-base';
+
+
+
 
 export class HomeScreen extends Component {
  
   constructor(props){
     super(props)
+    
   }  
-
-  componentWillMount(){
-    console.log(this.props)
-  }
+  
+  
   render() {
-
+    
     return (
-    <Container>
-        <Allheader  navigateEvent= {this.props.navigation} />
-        <MainList />
+      <Container style={{backgroundColor:'#a4b0be'}}>
+        <AllHeader /*  navigateEvent= {this.props.navigation}  *//>
+        <MainList/>
+        <TouchableOpacity 
+                activeOpacity = { 0.7 } 
+                style = { styles.TouchableOpacityStyle } 
+                onPress={()=>this.props.navigation.navigate("Form")}
+                >
+                    <Image
+                        source={{uri: ('https://reactnativecode.com/wp-content/uploads/2017/11/Floating_Button.png')}} 
+                        style = { styles.FloatingButtonStyle }
+                    />
+                
+      </TouchableOpacity>
     </Container>
     )
   }

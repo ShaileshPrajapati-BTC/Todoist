@@ -56,10 +56,10 @@ export default StyleSheet.create ({
         alignItems: 'center',
         justifyContent: 'center',
         right: 50,
-        bottom: 100,
-      },
-      FloatingButtonStyle: {
-  
+        bottom: 50,
+    },
+    FloatingButtonStyle: {
+        backgroundColor:'transparent',
         resizeMode: 'contain',
         width: 50,
         height: 50,

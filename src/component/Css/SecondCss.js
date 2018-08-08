@@ -41,14 +41,9 @@ export default StyleSheet.create({
         
     },
     noteFrameInside:{
-        flex:1,
-        marginTop:20,
-        marginLeft:20,
-        marginRight:20,
-        marginBottom:20,
-        backgroundColor:'#ecf0f1',
-      
         
+        backgroundColor:'#ecf0f1',
+        flex:1,
     },
     checkboxView:{
         margin:15,
@@ -70,5 +65,6 @@ export default StyleSheet.create({
     },
     noteView:{
         padding:10,
+
     }
 });

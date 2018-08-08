@@ -12,7 +12,7 @@ export class IconButton extends Component {
             <Icon 
                 style={this.props.style}
                 name={this.props.name} 
-                onPress={this.props.onPress}
+                onPress= {this.props.onPress}
                 >{this.props.value}</Icon>
          </Button>
     )

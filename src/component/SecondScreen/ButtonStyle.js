@@ -11,7 +11,8 @@ export class ButtonStyle extends Component {
             <TouchableOpacity
               style = {this.props.style}
               title = {this.props.title}
-              >
+                onPress = {this.props.onPress}
+                >
                 <Text>
                     {this.props.title}
                 </Text>

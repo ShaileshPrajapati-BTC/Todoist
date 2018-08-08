@@ -19,7 +19,7 @@ export class Allheader extends Component {
             <Title>Hello</Title>
         </Body>
         <Right>
-            <IconButton name="add" onPress={() => this.props.navigateEvent.navigate('Form')} />
+            {/* <IconButton name="add" onPress={() => this.props.navigateEvent.navigate('Form')} /> */}
         </Right>
     </Header>
     )
