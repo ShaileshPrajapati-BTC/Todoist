@@ -13,7 +13,7 @@ Title_Demo.schema = {
         createDate :{type:'string',default:""},
         editDate : {type:'string',default:''},
         completeDate : {type:'string',default:''},
-        notes :'Note_Demo[]'
+        notes :{type: 'list', objectType: 'Note_Demo'}
     }
 };
 

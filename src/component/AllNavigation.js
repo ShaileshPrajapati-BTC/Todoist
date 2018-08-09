@@ -3,7 +3,12 @@ import  HomeScreen  from './HomeScreen';
 import CreateForm from './SecondScreen/CreateForm'
 
 
-const Navigation =  StackNavigator(
+this.state = {
+    title : '',
+}
+
+
+const Navigation =StackNavigator(
     {
     Home:{
         screen:HomeScreen,
@@ -16,7 +21,7 @@ const Navigation =  StackNavigator(
     Form:{
         screen:CreateForm,
         navigationOptions:{
-            title :'Create Form',
+            title:"Create Note"
             /* headerStyle:{
             backgroundColor:"#3F51B5",
             } */

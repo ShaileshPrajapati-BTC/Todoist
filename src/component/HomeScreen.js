@@ -21,7 +21,7 @@ export class HomeScreen extends Component {
     return (
       <Container style={{backgroundColor:'#a4b0be'}}>
         <AllHeader /*  navigateEvent= {this.props.navigation}  *//>
-        <MainList/>
+        <MainList onPress={this.props.navigation}/>
         <TouchableOpacity 
                 activeOpacity = { 0.7 } 
                 style = { styles.TouchableOpacityStyle } 

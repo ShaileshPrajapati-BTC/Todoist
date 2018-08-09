@@ -13,15 +13,23 @@ export class ListItem extends Component {
         console.log(this.props.list);
     }
     componentDidMount(){
+        // alert(JSON.stringify(this.props.list))
         console.log("=----------------===================",this.props.list);
     }
   render() {
-      
+      let list = this.props.list
     return (
-        <TouchableOpacity style ={styles.row}>
+        <TouchableOpacity 
+            style ={styles.row}
+            onPress = {() =>{ this.props.onPress.navigate("Form",{
+                // data = this.props.list.title
+                    titleId:this.props.list.item.id,
+                });
+            }}
+            >
             <View>
-                <Title style ={styles.row} title={this.props.list}></Title>
-                <SubTitle style={styles.subTitle}></SubTitle>
+                <Title style ={styles.row} title={list.item.title}></Title>
+                <SubTitle style={styles.subTitle} sub={list.item.notes}></SubTitle>
             </View>
         </TouchableOpacity>
         

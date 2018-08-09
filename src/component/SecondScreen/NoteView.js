@@ -8,19 +8,29 @@ export class NoteView extends Component {
     constructor(props){
         super(props);
         this.state={
-            note:''
+            note:'',
+            status:true,
         }
 
     }
+       a = ()=>{
+            this.state.status=false,
+            this.state.note =''
+       }
+       b= ()=>{
+            this.state.status=true,
+            this.state.note = this.state.note;
+       }
     
-    render() {/* 
-      */
-   return (
+    render() {
+
+    return (
+
 /*      style={{borderWidth:1,height:60,backgroundColor:'red' }} */
       <View style={{flex:1,flexDirection:'row'}}   key={this.props.key}>
             <CheckBox 
                 style={this.props.style.checkboxView} 
-                checked={false}
+                checked={this.state.status}
                 />
             <TextInput 
                 style={this.props.style.noteText} 
@@ -30,7 +40,7 @@ export class NoteView extends Component {
                 onChangeText={(text) => this.setState({note:text}) } 
                 />
             <IconButton 
-                name="close" 
+                name="add" 
                 onPress={() => {this.props.onPress(this.state.note)}}
                 />
       </View>

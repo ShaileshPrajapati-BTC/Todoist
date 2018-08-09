@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import {  Text,Content ,View,Image ,FlatList,TouchableOpacity,RefreshControl } from 'react-native'
+import {  Text ,View,Image ,FlatList,TouchableOpacity,RefreshControl } from 'react-native'
 import ListItem from './List'
 import styles from './Css/CssForAl'
 import NoteTitle from '../Database/NoteTitle'
 import Note from '../Database/Note'
+import {Content} from 'native-base'
 
 const data = require('./JSON/Data.json');
 const Realm = require('realm')
@@ -13,7 +14,7 @@ export class MainList extends Component {
     constructor(props){
         super(props);
         this.state = {
-            AllList :'',
+            AllList :[],
 
             refreshing :false
             // subTitle :''
@@ -46,25 +47,29 @@ export class MainList extends Component {
           });
     }
   render() {
+    
+      
+      
     return (
-        <View
-        >
-            {/* (this.state.AllList.length > 0? */}
-                <FlatList
-                        data = {this.state.AllList}
-                        keyExtractor = {item => item.id}
-                        renderItem ={({item}) =>  <ListItem list={item.title} /> }
-                        refreshControl = {
-                            <RefreshControl
-                                refreshing = {this.state.refreshing} 
-                                onRefresh = {this.connectionData}
-                            />
-                        } 
-                        />
-                {/* :alert("Data not Found")
-            } */}
+      <Content   
+        refreshControl = {
+            <RefreshControl
+                refreshing = {this.state.refreshing} 
+                onRefresh = {this.connectionData.bind(this)}
+              />
+        }   >
+                {(this.state.AllList.length >0)?  
+              <FlatList
+                data = {this.state.AllList}
+                keyExtractor = {item => item.id}
+                
+                renderItem ={(item) =>  <ListItem list={item} onPress={this.props.onPress} /> }
+                />
+                :
+                <Text>Data not found</Text>
+                } 
            
-        </View>
+        </Content>
          
     )
   }
