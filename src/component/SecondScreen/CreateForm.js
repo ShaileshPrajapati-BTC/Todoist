@@ -15,35 +15,60 @@ const Realm = require('realm');
 
 
 export class CreateForm extends Component {
+ 
+  
+
   constructor(props){
     super(props);
     this.state = {
       ViewArray:[],
       Disable_Button: false,
-      realm :null,
+      obj:'',
       title:'',
+      editNote:[],
       notes:[],
       data:'',
-      id:0
-
+      id:0,
+      flage:''
     };  
     this.animatedValue = new Animated.Value(0);
     this.Array_Value_Index= 0;
-    this.realm = this.props.realm;
+    
   }
 
-  pushArray = (text) => {
+  pushArray = (text,key) => {
+    (this.state.flag ==="editTodo")?    
+      this.setState(prevState => {
+        editNote : prevState.notes.push({
+          id : parseInt(this.state.notes.length+1),
+          note:text,
+          editDate :new Date().toString()
+        })},() =>{
+          alert(JSON.stringify(this.state.editotes))
+          ToastAndroid.show('Note updated!', ToastAndroid.SHORT);
+        })
+    :
     this.setState(prevState => {
       notes : prevState.notes.push({
         id: parseInt(this.state.notes.length+1),
         note:text,
         createDate :new Date().toString()}
       )},()=>{
+        alert(JSON.stringify(this.state.notes))
       ToastAndroid.show('Note added!', ToastAndroid.SHORT);
     });  
+  
   }
   
-  For_Creating_Title_List = () => {
+  Updating_Title_List = () => {
+    
+     alert(JSON.stringify(this.state.notes))
+
+
+
+  }
+
+  Creating_Title_List = () => {
     // alert(JSON.stringify(this.state.notes))
 
     Realm.open({
@@ -58,25 +83,23 @@ export class CreateForm extends Component {
           id:l.length+1,
           title:this.state.title,
           createDate:new Date().toString(),
-          notes :this.state.notes
+          notes :this.state.notes,
+          
         });
       });
       alert("Add Successfully...")
       this.props.navigation.goBack();
     }).catch(e =>{
       alert(e);      
-    });
-        
-  }
+    });     
+  }  
 
-  
-
-  Add_New_View_Function  = () => {
+  Add_New_View_Function = () => {
     this.animatedValue.setValue(0);
     let New_Added_View_Value = { Array_Value_Index : this.Array_Value_Index}
     this.setState({
       Disable_Button :true,
-      ViewArray:[...this.state.ViewArray, New_Added_View_Value ]},
+      ViewArray:[...this.state.ViewArray, New_Added_View_Value ] },
         () => {
             Animated.timing(
                 this.animatedValue,
@@ -93,11 +116,27 @@ export class CreateForm extends Component {
         });
   }
 
-  render() {
-    let navigation = this.props.navigation
-    let list= navigation.getParam('titleId','id')
-      alert(JSON.stringify(list.id))
+  componentDidMount(){
+    if(this.props.navigation.state.params.flag === "editTodo"){
+      this.EditData()
+    }
+    // alert(JSON.stringify(list))  
+  } 
 
+  EditData = () => {
+    let navigation = this.props.navigation   
+    let list= navigation.getParam('titleId','id')
+    let flag = navigation.getParam('flag','val')
+    this.setState({
+      obj : list,
+      title : list.item.title,
+      editNote: list.item.notes,
+      flage : flag,
+      ViewArray : list.item.notes
+    }) ;
+  }
+  
+  render() {  
     const AnimatedValue = this.animatedValue.interpolate(
       {
           inputRange : [0 ,1],
@@ -106,40 +145,39 @@ export class CreateForm extends Component {
 
       
       let Rander_Animated_View = this.state.ViewArray.map(
-        (item,key) =>{/* 
-          if(( key ) == this.Array_Value_Index) { */
+        (item,key) =>{
+          // if(( key ) == this.Array_Value_Index) {
               return(    
                   <NoteView
                       key ={key} 
                       style={design}  
-                       onChangeText={this.pushArray}
+                      onChangeText={this.pushArray}
+                      value = {item}
                       onPress = {this.pushArray}
                    />
             
               );
-             /*  }
-              else
-              {
-                  return(
-                    <View style={{height:60, }}>
-                      <NoteView key={key} style={design} />
-                      </View>
-                  );
-              } */
+            // }
+            //   else
+            //   {
+            //       return(
+            //         <View style={{height:60, }}>
+            //           <NoteView key={key} style={design} />
+            //           </View>
+            //       );
+            //   } 
           }
         )
 
     /* style={{margin:10,padding:20, right:0, position:'absolute'}} */
    
-    const a = 
-      
-      <View style={design.container}>
-          <View style={{height:80}}>
+    const a = [ <View style={design.container}>  
+          <View style={{height:80}}> 
             <ButtonStyle 
                 style={[design.addButton ,design.buttonText]} 
-                title="Add Reminder"
-                onPress={this.For_Creating_Title_List} />
-          </View>
+                title="Create Note"
+                onPress={this.Creating_Title_List} />
+          </View> 
         
           <View style={{height:60}}>
             <TextInput 
@@ -159,27 +197,26 @@ export class CreateForm extends Component {
                 value=" Add Task" 
                 onPress={()=> this.Add_New_View_Function()} />              
       </View>
+      ]    
+         
     
-   
-    return (
-      
-      <View style={design.container}>
+    const b = [<View style={design.container}>
           <View style={{height:80}}>
             <ButtonStyle 
                 style={[design.addButton ,design.buttonText]} 
-                title="Add Reminder"
-                onPress={this.For_Creating_Title_List} />
+                title="Update Note"
+                onPress={this.Updating_Title_List} />
           </View>
         
           <View style={{height:60}}>
             <TextInput 
               style={design.titleText} 
-              placeholder="title"
               onChangeText= {(title)=> this.setState({title})}
               value = {this.state.title}
               /> 
           </View>
-              <KeyboardAwareScrollView style={{backgroundColor:'white',flex:1,margin:40,paddingBottom:80,}}>
+              <KeyboardAwareScrollView 
+                  style={{backgroundColor:'white',flex:1,margin:40,paddingBottom:80,}}>
                 <ScrollView style={design.noteFrameInside} >
                     {Rander_Animated_View}
                 </ScrollView>
@@ -188,8 +225,10 @@ export class CreateForm extends Component {
                 name="add" 
                 value=" Add Task" 
                 onPress={()=> this.Add_New_View_Function()} />              
-      </View>
-    )
+    </View> ] 
+    
+    return (this.state.flage === "editTodo" )? b :a 
+      
   
   }
 }

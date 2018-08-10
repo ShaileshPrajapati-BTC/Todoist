@@ -20,12 +20,7 @@ const Navigation =StackNavigator(
     },
     Form:{
         screen:CreateForm,
-        navigationOptions:{
-            title:"Create Note"
-            /* headerStyle:{
-            backgroundColor:"#3F51B5",
-            } */
-        }   
+        title : this.state.title 
     },  
 },
     {

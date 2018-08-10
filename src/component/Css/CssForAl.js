@@ -59,7 +59,7 @@ export default StyleSheet.create ({
         bottom: 50,
     },
     FloatingButtonStyle: {
-        backgroundColor:'transparent',
+        backgroundColor:"transparent",
         resizeMode: 'contain',
         width: 50,
         height: 50,

@@ -8,8 +8,9 @@ export class NoteView extends Component {
     constructor(props){
         super(props);
         this.state={
-            note:'',
+            note:this.props.value.note,
             status:true,
+            key : this.props.key
         }
 
     }
@@ -23,7 +24,6 @@ export class NoteView extends Component {
        }
     
     render() {
-
     return (
 
 /*      style={{borderWidth:1,height:60,backgroundColor:'red' }} */
@@ -37,11 +37,14 @@ export class NoteView extends Component {
                 // text = {this.props.text}
                 placeholder="Enter Notes"
                 multiline={true} 
-                onChangeText={(text) => this.setState({note:text}) } 
+                onChangeText={(text) => this.setState({note:text})}
+                value= {this.state.note}
+            
+
                 />
             <IconButton 
                 name="add" 
-                onPress={() => {this.props.onPress(this.state.note)}}
+                onPress={() => {this.props.onPress(this.state.note,this.state.key)}}
                 />
       </View>
     )

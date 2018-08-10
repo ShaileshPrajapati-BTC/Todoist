@@ -10,7 +10,7 @@ export default class SubTitle extends Component {
     return (
 
       <View>
-        <Text style={styles.subTitle} > {this.props.sub.id} </Text>
+        <Text style={styles.subTitle} > {this.props.sub.note} </Text>
       </View>
     )
   }

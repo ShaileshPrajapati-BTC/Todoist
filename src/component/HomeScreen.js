@@ -25,12 +25,15 @@ export class HomeScreen extends Component {
         <TouchableOpacity 
                 activeOpacity = { 0.7 } 
                 style = { styles.TouchableOpacityStyle } 
-                onPress={()=>this.props.navigation.navigate("Form")}
+                onPress={()=>this.props.navigation.navigate("Form",{
+                                                            title : "Create Note",
+                                                            flag: "NewTodo"
+                                                          })}
                 >
-                    <Image
-                        source={{uri: ('https://reactnativecode.com/wp-content/uploads/2017/11/Floating_Button.png')}} 
-                        style = { styles.FloatingButtonStyle }
-                    />
+                <Image
+                   source={{uri:('https://reactnativecode.com/wp-content/uploads/2017/11/Floating_Button.png')}} 
+                   style = { styles.FloatingButtonStyle }
+              />
                 
       </TouchableOpacity>
     </Container>

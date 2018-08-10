@@ -23,7 +23,9 @@ export class ListItem extends Component {
             style ={styles.row}
             onPress = {() =>{ this.props.onPress.navigate("Form",{
                 // data = this.props.list.title
-                    titleId:this.props.list.item.id,
+                    titleId:this.props.list,
+                    title : "Edit note",
+                    flag:'editTodo'
                 });
             }}
             >
