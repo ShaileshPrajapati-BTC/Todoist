@@ -59,10 +59,12 @@ export class MainList extends Component {
               />
         }   >
                 {(this.state.AllList.length >0)?  
+              
               <FlatList
                 data = {this.state.AllList}
                 keyExtractor = {item => item.id}                
                 renderItem ={(item) =>  <ListItem list={item} onPress={this.props.onPress} /> }
+                scrollEnabled ={true}
                 />
                 :
                 <Text>Data not found</Text>

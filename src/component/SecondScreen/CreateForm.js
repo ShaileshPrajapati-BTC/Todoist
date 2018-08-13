@@ -29,24 +29,38 @@ export class CreateForm extends Component {
       notes:[],
       data:'',
       id:0,
-      flage:''
+      flage:'',
+      note:''
     };  
+    // this.handleValue = this.handleValue.bind(this),
     this.animatedValue = new Animated.Value(0);
     this.Array_Value_Index= 0;
     
+    
   }
 
-  pushArray = (text,key) => {
-    (this.state.flag ==="editTodo")?    
-      this.setState(prevState => {
+
+  demoPush = (text) =>{
+    
+  }
+
+  pushArray = (text) => {
+    (this.state.flage ==="editTodo")?    
+     this.setState( prevState => {
         editNote : prevState.notes.push({
-          id : parseInt(this.state.notes.length+1),
+          id :id ,
           note:text,
           editDate :new Date().toString()
-        })},() =>{
-          alert(JSON.stringify(this.state.editotes))
-          ToastAndroid.show('Note updated!', ToastAndroid.SHORT);
+        })} 
+        ,() =>{
+          alert(JSON.stringify(this.state.editnotes))
         })
+      //  ( 
+      //     this.statenotes[key].note = 'text'
+      // ,() =>{
+      //     alert(JSON.stringify(this.state.notes))
+      //     ToastAndroid.show('Note updated!', ToastAndroid.SHORT);
+      //   })
     :
     this.setState(prevState => {
       notes : prevState.notes.push({
@@ -54,39 +68,90 @@ export class CreateForm extends Component {
         note:text,
         createDate :new Date().toString()}
       )},()=>{
-        alert(JSON.stringify(this.state.notes))
+        alert(JSON.stringify("welcom",this.state.notes))
       ToastAndroid.show('Note added!', ToastAndroid.SHORT);
     });  
   
   }
   
-  Updating_Title_List = () => {
-    
-     alert(JSON.stringify(this.state.notes))
 
 
+  handleValue = (text,key) => {
+
+    // alert(JSON.stringify(text ,"==========",key))
+    this.setState({note : text})
+    console.log(this.state.note,"...................",key)
+    // this.value = text;
+    // alert(text)
+  }
+  storeInArray = (note) =>{
+    alert(this.state.note)
+    // notes = this.state.notes.push(this.state.note)
 
   }
 
+
+  // demoCreate = () =>{
+  //   Realm.open({
+  //     schema:[NoteTitle,Note]
+  //   }).then(realm => {
+  //     realm.write(() =>{
+        
+  //       const l = realm.objects('Title_Demo').filtered('id=3')
+  //       const n =realm.objects(Note)
+  //       let obj =  realm.create(Note,this.state.notes);
+        
+  //       let t = realm.create(NoteTitle,{
+  //         id:l.length+1,
+  //         title:this.state.title,
+  //         createDate:new Date().toString(),
+  //         notes :this.state.ViewArray.map(
+  //           (item,key) =>{
+  //             return({
+  //               id: n.length+1,
+  //               note :this.state.note,
+  //               createDate : new Date().toString()               
+  //             })
+  //           })
+            
+  //         });
+  //         alert("Add Successfully...\n",JSON.stringify(l))
+
+  //     });
+  //     this.props.navigation.goBack();
+  //   }).catch(e =>{
+  //     alert(e);      
+  //   });
+  // }
+
+
   Creating_Title_List = () => {
-    // alert(JSON.stringify(this.state.notes))
+    // alert(JSON.stringify(this.state.ViewArrays))
 
     Realm.open({
       schema:[NoteTitle,Note]
     }).then(realm => {
       realm.write(() =>{
         
-        const l = realm.objects('Title_Demo')
-        // let obj =  realm.create(Note,this.state.notes);
-        
-        let t = realm.create(NoteTitle,{
+      const l = realm.objects('Title_Demo')
+      let n =realm.objects(Note)
+       
+      let t = realm.create(NoteTitle,{
           id:l.length+1,
           title:this.state.title,
           createDate:new Date().toString(),
-          notes :this.state.notes,
-          
-        });
+          notes :this.state.ViewArray.map(
+            (item,key) =>{
+              return({
+                id:parseInt(n.length+key+1),
+                note :item.value,
+                createDate : new Date().toString()               
+              })
+             })
+             
+          });
       });
+
       alert("Add Successfully...")
       this.props.navigation.goBack();
     }).catch(e =>{
@@ -96,9 +161,9 @@ export class CreateForm extends Component {
 
   Add_New_View_Function = () => {
     this.animatedValue.setValue(0);
-    let New_Added_View_Value = { Array_Value_Index : this.Array_Value_Index}
+    let New_Added_View_Value = { Array_Value_Index : this.Array_Value_Index,value:this.value}
     this.setState({
-      Disable_Button :true,
+      // Disable_Button :true,
       ViewArray:[...this.state.ViewArray, New_Added_View_Value ] },
         () => {
             Animated.timing(
@@ -111,6 +176,7 @@ export class CreateForm extends Component {
             ).start(() => 
               {
                 this.Array_Value_Index = this.Array_Value_Index + 1;
+                this.value= '' 
                 /* this.setState({ Disable_Button : false}); */
               });
         });
@@ -125,39 +191,68 @@ export class CreateForm extends Component {
 
   EditData = () => {
     let navigation = this.props.navigation   
-    let list= navigation.getParam('titleId','id')
-    let flag = navigation.getParam('flag','val')
+    
+    const list= navigation.getParam('titleId','id')
+    const flag = navigation.getParam('flag','val')
     this.setState({
       obj : list,
       title : list.item.title,
       editNote: list.item.notes,
       flage : flag,
       ViewArray : list.item.notes
+
+    },()=>{
+      this.Updating_Title_List()
     }) ;
   }
-  
-  render() {  
-    const AnimatedValue = this.animatedValue.interpolate(
-      {
-          inputRange : [0 ,1],
-          outputRange : [59,0]
-      });  
 
-      
+  Updating_Title_List = () => {  
+
+
+        //  alert (JSON.stringify(this.state.ViewArray.length))
+    //       this.state.ViewArray.map(
+    //    (item,key) => {
+    //     console.log( key ," $$$$$$$$$$$",item)
+    //    }
+    //  )
+
+    
+  }
+    
+  render() {  
+    // const AnimatedValue = this.animatedValue.interpolate(
+    //   {
+    //       inputRange : [0 ,1],
+    //       outputRange : [59,0]
+    //   });  
+      console.log(JSON.stringify(this.state.ViewArray))
       let Rander_Animated_View = this.state.ViewArray.map(
         (item,key) =>{
+
+          console.log("Kssey  :",key,"====================","item :",item.note)
           // if(( key ) == this.Array_Value_Index) {
-              return(    
-                  <NoteView
-                      key ={key} 
-                      style={design}  
-                      onChangeText={this.pushArray}
-                      value = {item}
-                      onPress = {this.pushArray}
-                   />
-            
+
+          item.value = (this.state.flage === "editTodo" )?item.note:''
+             
+            return(    
+              <NoteView
+                key ={key} 
+                style={design}  
+                // onChangeText ={(this.handleValue)}
+                // onChangeText = {(text) => (item.value=text)}
+                onChangeText = {(text) => {item.value=text}}
+                value ={item.value}
+
+                
+                // (this.state.flage === "editTodo")? value={this.state.ViewArray[key].note} : value = {item.val}
+                // value = {this.item}
+              // console.log("hello =========================================================",key)
+                      // onPress = {this.pushArray}
+                      // onChange={this.handleValue}
+                      />
+
               );
-            // }
+              // }
             //   else
             //   {
             //       return(
@@ -195,7 +290,10 @@ export class CreateForm extends Component {
             <IconButton style={{paddingLeft:10,paddingBottom:30,fontSize:20}} 
                 name="add" 
                 value=" Add Task" 
-                onPress={()=> this.Add_New_View_Function()} />              
+                onPress={()=> this.Add_New_View_Function()} 
+                
+                />              
+
       </View>
       ]    
          

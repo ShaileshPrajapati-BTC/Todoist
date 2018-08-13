@@ -8,24 +8,46 @@ export class NoteView extends Component {
     constructor(props){
         super(props);
         this.state={
-            note:this.props.value.note,
+            // note:this.props.value,
             status:true,
-            key : this.props.key
+            key : this.props.key,
+            // note : this.props.value
+            
         }
 
     }
-       a = ()=>{
-            this.state.status=false,
-            this.state.note =''
-       }
-       b= ()=>{
-            this.state.status=true,
-            this.state.note = this.state.note;
-       }
+
+    // componentWillReceiveProps(){
+    //     this.setNote()
+    // }
+
+   
+    // dataTransfer = (note) => {
+    //     this.props.notes.push({
+    //         note : this.state.note
+    //     })
+
+    // }
+
+    //    a = ()=>{
+    //         this.state.status=false,
+    //         this.state.note =''
+    //    }
+    //    b= ()=>{
+    //         this.state.status=true,
+    //         this.state.note = this.state.note;
+    //    }
     
+    setNote =() =>{
+        alert(JSON.stringify(this.props.navigation))
+        // this.setState({
+        //     note:text
+        // })
+    }
+    
+
     render() {
     return (
-
 /*      style={{borderWidth:1,height:60,backgroundColor:'red' }} */
       <View style={{flex:1,flexDirection:'row'}}   key={this.props.key}>
             <CheckBox 
@@ -37,14 +59,24 @@ export class NoteView extends Component {
                 // text = {this.props.text}
                 placeholder="Enter Notes"
                 multiline={true} 
-                onChangeText={(text) => this.setState({note:text})}
-                value= {this.state.note}
-            
+                onChangeText = {this.props.onChangeText}
+                // onChangeText={this.props.onChangeText(this.state.note,this.state.key)}
+                // onChangeText={(text) => {this.setState({val:text},this.props.onChangeText(this.state.val,this.key))}}
+                value ={this.props.value}
+
+                // onChange ={this.props.onChange(this.state.note)}
+                // onChangeText={(text) => {  this.setState({value:text}),this.props.note=text} }
+                // onChangeText={(va) => {  } }
+                
+                // value= {this.value}
+                // onChange={this.setNote}
+                // onPress ={ () => {this.props.onPress(this.state.note)}}
+                // onChangeText=
 
                 />
             <IconButton 
                 name="add" 
-                onPress={() => {this.props.onPress(this.state.note,this.state.key)}}
+                onPress={() => {this.props.onPress(this.state.note)}}
                 />
       </View>
     )
