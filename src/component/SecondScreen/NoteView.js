@@ -8,17 +8,19 @@ export class NoteView extends Component {
     constructor(props){
         super(props);
         this.state={
-            // note:this.props.value,
+            note:props.value,
             status:true,
-            key : this.props.key,
-            // note : this.props.value
-            
+            key : props.key,
+            // note : this.props.value,
         }
 
     }
 
     // componentWillReceiveProps(){
-    //     this.setNote()
+    //     nextProps =>{
+    //         this.setState
+    //             ({note:nextProps.value})
+    //     }
     // }
 
    
@@ -38,12 +40,7 @@ export class NoteView extends Component {
     //         this.state.note = this.state.note;
     //    }
     
-    setNote =() =>{
-        alert(JSON.stringify(this.props.navigation))
-        // this.setState({
-        //     note:text
-        // })
-    }
+s
     
 
     render() {
@@ -59,16 +56,18 @@ export class NoteView extends Component {
                 // text = {this.props.text}
                 placeholder="Enter Notes"
                 multiline={true} 
+
+                // onChangeText = {this.props.onChangeText}
                 onChangeText = {this.props.onChangeText}
                 // onChangeText={this.props.onChangeText(this.state.note,this.state.key)}
-                // onChangeText={(text) => {this.setState({val:text},this.props.onChangeText(this.state.val,this.key))}}
-                value ={this.props.value}
+                // onChangeText={this.props.onChangeText =(text) => {this.setState({note:text}/* ,this.props.onChangeText(text) */)}}
+                // value ={this.state.note}
 
                 // onChange ={this.props.onChange(this.state.note)}
                 // onChangeText={(text) => {  this.setState({value:text}),this.props.note=text} }
                 // onChangeText={(va) => {  } }
                 
-                // value= {this.value}
+                value= {this.props.value}
                 // onChange={this.setNote}
                 // onPress ={ () => {this.props.onPress(this.state.note)}}
                 // onChangeText=

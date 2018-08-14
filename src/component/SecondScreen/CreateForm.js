@@ -10,7 +10,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import NoteTitle from '../../Database/NoteTitle'
 import Note from '../../Database/Note'
 
-const Realm = require('realm');
+const realm = new Realm({schema:[NoteTitle,Note]});
 
 
 
@@ -26,16 +26,16 @@ export class CreateForm extends Component {
       obj:'',
       title:'',
       editNote:[],
-      notes:[],
+      // notes:[],
+      realm:'',
       data:'',
       id:0,
       flage:'',
-      note:''
-    };  
+     };  
     // this.handleValue = this.handleValue.bind(this),
     this.animatedValue = new Animated.Value(0);
     this.Array_Value_Index= 0;
-    
+     
     
   }
 
@@ -76,19 +76,20 @@ export class CreateForm extends Component {
   
 
 
-  handleValue = (text,key) => {
+  // handleValue = (text) => {
 
-    // alert(JSON.stringify(text ,"==========",key))
-    this.setState({note : text})
-    console.log(this.state.note,"...................",key)
-    // this.value = text;
-    // alert(text)
-  }
-  storeInArray = (note) =>{
-    alert(this.state.note)
-    // notes = this.state.notes.push(this.state.note)
+  //   // alert(JSON.stringify(text ,"==========",key))
+  //   this.setState({note :text})
+    
+  //   alert(this.state.note)
+  //   // console.log(this.state.note,"...................",key)
+  //   // this.value = text;
+  // }
+  // storeInArray = (note) =>{
+  //   alert(this.state.note)
+  //   // notes = this.state.notes.push(this.state.note)
 
-  }
+  // }
 
 
   // demoCreate = () =>{
@@ -128,14 +129,17 @@ export class CreateForm extends Component {
   Creating_Title_List = () => {
     // alert(JSON.stringify(this.state.ViewArrays))
 
+
+
+
     Realm.open({
       schema:[NoteTitle,Note]
     }).then(realm => {
-      realm.write(() =>{
+    realm.write(() =>{
         
-      const l = realm.objects('Title_Demo')
+      const l = realm.objects(NoteTitle)
       let n =realm.objects(Note)
-       
+       console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",this.state.ViewArray)
       let t = realm.create(NoteTitle,{
           id:l.length+1,
           title:this.state.title,
@@ -143,25 +147,38 @@ export class CreateForm extends Component {
           notes :this.state.ViewArray.map(
             (item,key) =>{
               return({
-                id:parseInt(n.length+key+1),
-                note :item.value,
+                id:parseInt(n.length+item.notes.id+1),
+                note :item.note,
                 createDate : new Date().toString()               
               })
              })
              
-          });
       });
 
-      alert("Add Successfully...")
-      this.props.navigation.goBack();
-    }).catch(e =>{
-      alert(e);      
-    });     
-  }  
+      if(this.state.flage == 'newTodo'){
+
+      }
+
+
+    });
+    ToastAndroid.show('Note added successfully...', ToastAndroid.SHORT);
+    this.props.navigation.goBack();
+   }).catch(e =>{
+     alert(e);      
+   });     
+}  
 
   Add_New_View_Function = () => {
     this.animatedValue.setValue(0);
-    let New_Added_View_Value = { Array_Value_Index : this.Array_Value_Index,value:this.value}
+    let New_Added_View_Value = { Array_Value_Index : this.Array_Value_Index,notes:
+                                {
+                                id:this.Array_Value_Index,
+                                note:'',
+                                createDate:'',
+                                editDate:'',
+                                completeDate:''
+                                }
+                              }
     this.setState({
       // Disable_Button :true,
       ViewArray:[...this.state.ViewArray, New_Added_View_Value ] },
@@ -176,7 +193,7 @@ export class CreateForm extends Component {
             ).start(() => 
               {
                 this.Array_Value_Index = this.Array_Value_Index + 1;
-                this.value= '' 
+                // value=''
                 /* this.setState({ Disable_Button : false}); */
               });
         });
@@ -194,31 +211,54 @@ export class CreateForm extends Component {
     
     const list= navigation.getParam('titleId','id')
     const flag = navigation.getParam('flag','val')
+    // alert(JSON.stringify(flag)) 
     this.setState({
       obj : list,
       title : list.item.title,
-      editNote: list.item.notes,
+      // editNote: list.item.notes,
       flage : flag,
       ViewArray : list.item.notes
 
     },()=>{
-      this.Updating_Title_List()
+      // alert(this.state.title)
+      alert(JSON.stringify(this.state.ViewArray))
+    //   // this.Updating_Title_List()
     }) ;
   }
 
   Updating_Title_List = () => {  
+ // alert(JSON.stringify(this.state.ViewArrays))
 
+    Realm.open({
+      schema:[NoteTitle,Note]
+      }).then(realm => {
+      realm.write(() =>{ 
+        // alert(JSON.stringify(this.state.obj))
+        let t = realm.create(NoteTitle,{
+          id:this.state.obj.item.id,
+          title:this.state.title,
+          editDate:new Date().toString(),
+          notes :this.state.ViewArray.map(
+            (item,key) =>{
+              return({
+                id:item.id,
+                note :item.note,
+                editDate : new Date().toString()               
+              })
+            })
+            
+          },true);
+      });
 
-        //  alert (JSON.stringify(this.state.ViewArray.length))
-    //       this.state.ViewArray.map(
-    //    (item,key) => {
-    //     console.log( key ," $$$$$$$$$$$",item)
-    //    }
-    //  )
-
-    
+      alert("Note updated...")
+      this.props.navigation.goBack();
+    }).catch(e =>{
+      alert(e);      
+    });         
   }
-    
+
+
+
   render() {  
     // const AnimatedValue = this.animatedValue.interpolate(
     //   {
@@ -232,17 +272,21 @@ export class CreateForm extends Component {
           console.log("Kssey  :",key,"====================","item :",item.note)
           // if(( key ) == this.Array_Value_Index) {
 
-          item.value = (this.state.flage === "editTodo" )?item.note:''
+            // this.setState({
+              
+            //     realValue :(this.state.flage === "editTodo" )?item.note:realValue
+            // })        
+
              
             return(    
               <NoteView
                 key ={key} 
-                style={design}  
-                // onChangeText ={(this.handleValue)}
-                // onChangeText = {(text) => (item.value=text)}
-                onChangeText = {(text) => {item.value=text}}
-                value ={item.value}
-
+                style={design} 
+                
+                // onChangeText = {this.}
+                onChangeText = {(text) => /* (item.value=text) */ { item.note=text }}
+// final                onChangeText = {(text) => {item.value=text}}
+               value ={ item.note}
                 
                 // (this.state.flage === "editTodo")? value={this.state.ViewArray[key].note} : value = {item.val}
                 // value = {this.item}
@@ -270,8 +314,9 @@ export class CreateForm extends Component {
           <View style={{height:80}}> 
             <ButtonStyle 
                 style={[design.addButton ,design.buttonText]} 
+                // title={(this.state.flage === "editTodo" )? "Update note" :"Create Note"}
                 title="Create Note"
-                onPress={this.Creating_Title_List} />
+                onPress={(this.state.flage === "editTodo" )? this.Updating_Title_List :this.Creating_Title_List} />
           </View> 
         
           <View style={{height:60}}>
