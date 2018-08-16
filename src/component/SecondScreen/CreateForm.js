@@ -74,7 +74,7 @@ export class CreateForm extends Component {
   
   }
   
-
+  
 
   // handleValue = (text) => {
 
@@ -147,7 +147,7 @@ export class CreateForm extends Component {
           notes :this.state.ViewArray.map(
             (item,key) =>{
               return({
-                id:parseInt(n.length+item.notes.id+1),
+                id:parseInt(n.length+item.Array_Value_Index+1),
                 note :item.note,
                 createDate : new Date().toString()               
               })
@@ -170,14 +170,14 @@ export class CreateForm extends Component {
 
   Add_New_View_Function = () => {
     this.animatedValue.setValue(0);
-    let New_Added_View_Value = { Array_Value_Index : this.Array_Value_Index,notes:
-                                {
-                                id:this.Array_Value_Index,
-                                note:'',
-                                createDate:'',
-                                editDate:'',
-                                completeDate:''
-                                }
+    let New_Added_View_Value = { Array_Value_Index : this.Array_Value_Index
+                                // {
+                                // id:this.Array_Value_Index,
+                                // note:'',
+                                // createDate:'',
+                                // editDate:'',
+                                // completeDate:''
+                                // }
                               }
     this.setState({
       // Disable_Button :true,
@@ -209,19 +209,20 @@ export class CreateForm extends Component {
   EditData = () => {
     let navigation = this.props.navigation   
     
-    const list= navigation.getParam('titleId','id')
-    const flag = navigation.getParam('flag','val')
-    // alert(JSON.stringify(flag)) 
+    let list= navigation.getParam('titleId','id')
+    let flag = navigation.getParam('flag','val')
+    // alert("^^^^^^^^^^^^^^^^^^^^^^",JSON.stringify(list))/*  */
+    
+    alert(JSON.stringify(navigation)) 
     this.setState({
       obj : list,
       title : list.item.title,
-      // editNote: list.item.notes,
+    //   // editNote: list.item.notes,
       flage : flag,
       ViewArray : list.item.notes
-
     },()=>{
       // alert(this.state.title)
-      alert(JSON.stringify(this.state.ViewArray))
+      // alert(JSON.stringify(this.state.ViewArray))
     //   // this.Updating_Title_List()
     }) ;
   }
@@ -240,6 +241,7 @@ export class CreateForm extends Component {
           editDate:new Date().toString(),
           notes :this.state.ViewArray.map(
             (item,key) =>{
+              
               return({
                 id:item.id,
                 note :item.note,
@@ -258,71 +260,51 @@ export class CreateForm extends Component {
   }
 
 
+  HandleValue = (text,id) =>{ 
+    console.warn(id,"================",text)
+    for(var i=0;i<this.state.ViewArray.length ; i++  ){
+        if(this.state.ViewArray[i].id === id){
+          
+          let demoView = [...this.state.ViewArray];
+          let index = demoView.findIndex(notes  => notes.id === id);
+          demoView[index] = {...demoView[index],note : text};
+          this.setState ({ViewArray : demoView});
+        }
+    }
+  };
+
+  
 
   render() {  
-    // const AnimatedValue = this.animatedValue.interpolate(
-    //   {
-    //       inputRange : [0 ,1],
-    //       outputRange : [59,0]
-    //   });  
-      console.log(JSON.stringify(this.state.ViewArray))
-      let Rander_Animated_View = this.state.ViewArray.map(
+    let Rander_Animated_View = this.state.ViewArray.map(
         (item,key) =>{
-
-          console.log("Kssey  :",key,"====================","item :",item.note)
-          // if(( key ) == this.Array_Value_Index) {
-
-            // this.setState({
-              
-            //     realValue :(this.state.flage === "editTodo" )?item.note:realValue
-            // })        
-
-             
-            return(    
-              <NoteView
-                key ={key} 
-                style={design} 
-                
-                // onChangeText = {this.}
-                onChangeText = {(text) => /* (item.value=text) */ { item.note=text }}
-// final                onChangeText = {(text) => {item.value=text}}
-               value ={ item.note}
-                
-                // (this.state.flage === "editTodo")? value={this.state.ViewArray[key].note} : value = {item.val}
-                // value = {this.item}
-              // console.log("hello =========================================================",key)
-                      // onPress = {this.pushArray}
-                      // onChange={this.handleValue}
-                      />
-
-              );
-              // }
-            //   else
-            //   {
-            //       return(
-            //         <View style={{height:60, }}>
-            //           <NoteView key={key} style={design} />
-            //           </View>
-            //       );
-            //   } 
+          return(    
+            <NoteView
+              key ={key}
+              id ={item.id} 
+              style={design} 
+              onChangeText = {(text,id) =>{(this.state.flage==='editTodo')?this.HandleValue(text,id):item.note =text}}
+              value ={item.note }
+                      onChange = {this.onChange}
+              />
+            )
           }
-        )
-
-    /* style={{margin:10,padding:20, right:0, position:'absolute'}} */
-   
-    const a = [ <View style={design.container}>  
+          
+      )
+      const a =[ 
+        <View style={design.container}>  
           <View style={{height:80}}> 
             <ButtonStyle 
                 style={[design.addButton ,design.buttonText]} 
-                // title={(this.state.flage === "editTodo" )? "Update note" :"Create Note"}
-                title="Create Note"
+                title={(this.state.flage === "editTodo" )? "Update note" :"Create Note"}
+                // title="Create Note"
                 onPress={(this.state.flage === "editTodo" )? this.Updating_Title_List :this.Creating_Title_List} />
           </View> 
         
           <View style={{height:60}}>
             <TextInput 
               style={design.titleText} 
-              placeholder="title"
+              placeholder="title" 
               onChangeText= {(title)=> this.setState({title})}
               value = {this.state.title}
               /> 
@@ -335,45 +317,17 @@ export class CreateForm extends Component {
             <IconButton style={{paddingLeft:10,paddingBottom:30,fontSize:20}} 
                 name="add" 
                 value=" Add Task" 
-                onPress={()=> this.Add_New_View_Function()} 
-                
+                onPress={()=> this.Add_New_View_Function()}       
                 />              
+           </View>
+      ]
 
-      </View>
-      ]    
-         
-    
-    const b = [<View style={design.container}>
-          <View style={{height:80}}>
-            <ButtonStyle 
-                style={[design.addButton ,design.buttonText]} 
-                title="Update Note"
-                onPress={this.Updating_Title_List} />
-          </View>
-        
-          <View style={{height:60}}>
-            <TextInput 
-              style={design.titleText} 
-              onChangeText= {(title)=> this.setState({title})}
-              value = {this.state.title}
-              /> 
-          </View>
-              <KeyboardAwareScrollView 
-                  style={{backgroundColor:'white',flex:1,margin:40,paddingBottom:80,}}>
-                <ScrollView style={design.noteFrameInside} >
-                    {Rander_Animated_View}
-                </ScrollView>
-            </KeyboardAwareScrollView>
-            <IconButton style={{paddingLeft:10,paddingBottom:30,fontSize:20}} 
-                name="add" 
-                value=" Add Task" 
-                onPress={()=> this.Add_New_View_Function()} />              
-    </View> ] 
-    
-    return (this.state.flage === "editTodo" )? b :a 
-      
+       
+      // const p =this.updateFunction
+
+      return a
+    // return (this.state.flage === "editTodo")? this.updateFunction(): a;
   
   }
 }
-
 export default CreateForm 

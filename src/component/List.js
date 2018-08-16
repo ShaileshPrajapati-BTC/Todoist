@@ -10,20 +10,23 @@ export class ListItem extends Component {
     }
 
     componentWillMount(){
-        console.log(this.props.list);
+        // console.log(this.props.list);
     }
     componentDidMount(){
         // alert(JSON.stringify(this.props.list))
-        console.log("=----------------===================",this.props.list);
+        // console.log("=----------------===================",this.props.list);
     }
   render() {
       let list = this.props.list
+
+    //   console.log(this.props.item.id)
     return (
         <TouchableOpacity 
             style ={styles.row}
             onPress = {() =>{ this.props.onPress.navigate("Form",{
-                // data = this.props.list.title
+                    // ssdata : this.props.list.title,
                     titleId:this.props.list,
+                    // HEllo :this.props.list.notes,
                     title : "Edit note",
                     flag:'editTodo'
                 });

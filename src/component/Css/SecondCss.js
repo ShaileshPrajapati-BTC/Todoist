@@ -20,7 +20,7 @@ export default StyleSheet.create({
         fontWeight:'bold', 
         backgroundColor:'transparent',
         paddingLeft : 20,
-        fontSize:25,
+        fontSize:20,
         
     },
     noteText:{
@@ -29,7 +29,7 @@ export default StyleSheet.create({
         backgroundColor:'transparent',
         paddingLeft:10,
         borderRadius:10,
-        fontSize:20,
+        fontSize:15,
         height:50,
         width:168,
     },

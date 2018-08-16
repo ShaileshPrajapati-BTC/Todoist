@@ -62,7 +62,7 @@ export class MainList extends Component {
               
               <FlatList
                 data = {this.state.AllList}
-                keyExtractor = {item => item.id}                
+                keyExtractor = {item => {item.id}}                
                 renderItem ={(item) =>  <ListItem list={item} onPress={this.props.onPress} /> }
                 scrollEnabled ={true}
                 />
