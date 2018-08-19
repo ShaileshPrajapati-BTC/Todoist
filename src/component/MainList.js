@@ -20,6 +20,8 @@ export class MainList extends Component {
             // subTitle :''
       
           };
+
+          this.connectionData = this.connectionData.bind(this)
     }
 
 
@@ -27,7 +29,7 @@ export class MainList extends Component {
         this.connectionData();
     }
 
-    connectionData =() => {
+    connectionData = () => {
         this.setState({refreshing : true})
         Realm.open({
             schema:[ NoteTitle,Note]
@@ -35,6 +37,10 @@ export class MainList extends Component {
               realm.write(() =>{
               // alert(Realm.defaultPath); 
               let  List = realm.objects('Title_Demo');
+
+
+              let a = realm.objects(Note);
+              // console.log(a)
              this.setState({
                 AllList :List,
                 refreshing:false
@@ -46,28 +52,32 @@ export class MainList extends Component {
             
           });
     }
+
+
   render() {
-    
-      
-      
+    console.log(this.state.AllList)
     return (
       <Content   
-        refreshControl = {
+        /* refreshControl = {
             <RefreshControl
                 refreshing = {this.state.refreshing} 
                 onRefresh = {this.connectionData.bind(this)}
-              />
-        }   >
+                />
+                }  */  >
                 {(this.state.AllList.length >0)?  
               
               <FlatList
                 data = {this.state.AllList}
-                keyExtractor = {item => {item.id}}                
+                extraData ={this.state.AllList}
+                keyExtractor = {item => {item.id}} 
                 renderItem ={(item) =>  <ListItem list={item} onPress={this.props.onPress} /> }
+                inverted ={ true}               
+                refreshing = {this.state.refreshing}
                 scrollEnabled ={true}
+         
                 />
                 :
-                <Text>Data not found</Text>
+                <Text>No Note availabel</Text>
                 } 
            
         </Content>

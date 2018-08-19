@@ -11,12 +11,12 @@ export class Allheader extends Component {
       
   render() {
     return (
-        <Header>
+    <Header>
         <Left>             
-            <IconButton name="menu"  />
+            <IconButton onPress={() =>  this.props.onPress.navigate('DrawerOpen')} name="menu"  />
         </Left>
         <Body>
-            <Title>Hello</Title>
+            <Title>Home</Title>
         </Body>
         <Right>
             {/* <IconButton name="add" onPress={() => this.props.navigateEvent.navigate('Form')} /> */}

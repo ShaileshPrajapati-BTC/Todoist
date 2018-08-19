@@ -5,8 +5,7 @@ import design from '../Css/SecondCss'
 import ButtonStyle from "./ButtonStyle"
 import NoteView from './NoteView'
 import { IconButton } from '../IconButton';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import NoteTitle from '../../Database/NoteTitle'
 import Note from '../../Database/Note'
 
@@ -25,10 +24,6 @@ export class CreateForm extends Component {
       Disable_Button: false,
       obj:'',
       title:'',
-      editNote:[],
-      // notes:[],
-      realm:'',
-      data:'',
       id:0,
       flage:'',
      };  
@@ -39,40 +34,35 @@ export class CreateForm extends Component {
     
   }
 
-
-  demoPush = (text) =>{
-    
-  }
-
-  pushArray = (text) => {
-    (this.state.flage ==="editTodo")?    
-     this.setState( prevState => {
-        editNote : prevState.notes.push({
-          id :id ,
-          note:text,
-          editDate :new Date().toString()
-        })} 
-        ,() =>{
-          alert(JSON.stringify(this.state.editnotes))
-        })
-      //  ( 
-      //     this.statenotes[key].note = 'text'
-      // ,() =>{
-      //     alert(JSON.stringify(this.state.notes))
-      //     ToastAndroid.show('Note updated!', ToastAndroid.SHORT);
-      //   })
-    :
-    this.setState(prevState => {
-      notes : prevState.notes.push({
-        id: parseInt(this.state.notes.length+1),
-        note:text,
-        createDate :new Date().toString()}
-      )},()=>{
-        alert(JSON.stringify("welcom",this.state.notes))
-      ToastAndroid.show('Note added!', ToastAndroid.SHORT);
-    });  
+  // pushArray = (text) => {
+  //   (this.state.flage ==="editTodo")?    
+  //    this.setState( prevState => {
+  //       editNote : prevState.notes.push({
+  //         id :id ,
+  //         note:text,
+  //         editDate :new Date().toString()
+  //       })} 
+  //       ,() =>{
+  //         alert(JSON.stringify(this.state.editnotes))
+  //       })  
+  //     //  ( 
+  //     //     this.statenotes[key].note = 'text'
+  //     // ,() =>{
+  //     //     alert(JSON.stringify(this.state.notes))
+  //     //     ToastAndroid.show('Note updated!', ToastAndroid.SHORT);
+  //     //   })
+  //   :
+  //   this.setState(prevState => {
+  //     notes : prevState.notes.push({
+  //       id: parseInt(this.state.notes.length+1),
+  //       note:text,
+  //       createDate :new Date().toString()}
+  //     )},()=>{
+  //       alert(JSON.stringify("welcom",this.state.notes))
+  //     ToastAndroid.show('Note added!', ToastAndroid.SHORT);
+  //   });  
   
-  }
+  // }
   
   
 
@@ -127,19 +117,12 @@ export class CreateForm extends Component {
 
 
   Creating_Title_List = () => {
-    // alert(JSON.stringify(this.state.ViewArrays))
-
-
-
-
     Realm.open({
       schema:[NoteTitle,Note]
     }).then(realm => {
     realm.write(() =>{
-        
       const l = realm.objects(NoteTitle)
       let n =realm.objects(Note)
-       console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",this.state.ViewArray)
       let t = realm.create(NoteTitle,{
           id:l.length+1,
           title:this.state.title,
@@ -151,18 +134,12 @@ export class CreateForm extends Component {
                 note :item.note,
                 createDate : new Date().toString()               
               })
-             })
-             
+            }
+          )    
       });
-
-      if(this.state.flage == 'newTodo'){
-
-      }
-
-
     });
     ToastAndroid.show('Note added successfully...', ToastAndroid.SHORT);
-    this.props.navigation.goBack();
+    this.props.navigation.goBack( this.componentWillMount);
    }).catch(e =>{
      alert(e);      
    });     
@@ -170,15 +147,7 @@ export class CreateForm extends Component {
 
   Add_New_View_Function = () => {
     this.animatedValue.setValue(0);
-    let New_Added_View_Value = { Array_Value_Index : this.Array_Value_Index
-                                // {
-                                // id:this.Array_Value_Index,
-                                // note:'',
-                                // createDate:'',
-                                // editDate:'',
-                                // completeDate:''
-                                // }
-                              }
+    let New_Added_View_Value = { Array_Value_Index : this.Array_Value_Index}
     this.setState({
       // Disable_Button :true,
       ViewArray:[...this.state.ViewArray, New_Added_View_Value ] },
@@ -211,13 +180,12 @@ export class CreateForm extends Component {
     
     let list= navigation.getParam('titleId','id')
     let flag = navigation.getParam('flag','val')
-    // alert("^^^^^^^^^^^^^^^^^^^^^^",JSON.stringify(list))/*  */
+    // alert(JSON.stringify(list))
     
-    alert(JSON.stringify(navigation)) 
+    // alert(JSON.stringify(navigation)) 
     this.setState({
       obj : list,
       title : list.item.title,
-    //   // editNote: list.item.notes,
       flage : flag,
       ViewArray : list.item.notes
     },()=>{
@@ -241,7 +209,6 @@ export class CreateForm extends Component {
           editDate:new Date().toString(),
           notes :this.state.ViewArray.map(
             (item,key) =>{
-              
               return({
                 id:item.id,
                 note :item.note,
@@ -251,7 +218,6 @@ export class CreateForm extends Component {
             
           },true);
       });
-
       alert("Note updated...")
       this.props.navigation.goBack();
     }).catch(e =>{
@@ -261,20 +227,20 @@ export class CreateForm extends Component {
 
 
   HandleValue = (text,id) =>{ 
-    console.warn(id,"================",text)
+    console.warn(id,"================&",text)
     for(var i=0;i<this.state.ViewArray.length ; i++  ){
-        if(this.state.ViewArray[i].id === id){
-          
-          let demoView = [...this.state.ViewArray];
+      if(this.state.ViewArray[i].id === id){          
+        let demoView = [...this.state.ViewArray];
           let index = demoView.findIndex(notes  => notes.id === id);
           demoView[index] = {...demoView[index],note : text};
           this.setState ({ViewArray : demoView});
+        }else{
+          // console.log(JSON.stringify(this.state.demoView))
         }
     }
   };
 
   
-
   render() {  
     let Rander_Animated_View = this.state.ViewArray.map(
         (item,key) =>{

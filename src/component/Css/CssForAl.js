@@ -7,16 +7,20 @@ export default StyleSheet.create ({
     },
     row:{
         backgroundColor : "#dfe4ea",
+        flexDirection:'row',
         margin:10,
+        padding:15,  
         borderRadius:5,
     },
     title:{
-        paddingTop :10,
-         fontSize :20,
-         paddingLeft : 20,
+         fontSize :23,
+         color: '#4A90E2',
          fontStyle: "normal",
          fontWeight :"bold",
-        color: "black"
+        color: "black",
+        fontWeight:'bold',
+        justifyContent:'center',
+        alignSelf:'center'
     },
     subTitle:{
         paddingTop:5,
@@ -63,8 +67,22 @@ export default StyleSheet.create ({
         resizeMode: 'contain',
         width: 50,
         height: 50,
-      }
-    
+      },
+    trash_Icon: {
+        // alignSelf: "flex-end",
+        // justifyContent : 'flex-end',
+        right :10,
+        // alignSelf:"",
+        marginRight:10,
+        justifyContent: 'center',
+        alignItems: 'flex-end'
+
+    },
+    drawerImage:{
+        height:300,
+        width : 300,
+            
+    }
 
     
 });
