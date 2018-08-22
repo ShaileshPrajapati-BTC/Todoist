@@ -14,74 +14,54 @@ export class MainList extends Component {
     constructor(props){
         super(props);
         this.state = {
-            AllList :[],
+            // AllList :[],
 
             refreshing :false
             // subTitle :''
       
           };
+          this
 
-          this.connectionData = this.connectionData.bind(this)
     }
 
 
-    componentWillMount(){
-        this.connectionData();
-    }
+     
+    // componentDidMount(){
+    //   console.log(" Did Mount")
 
-    connectionData = () => {
-        this.setState({refreshing : true})
-        Realm.open({
-            schema:[ NoteTitle,Note]
-            }).then(realm => {
-              realm.write(() =>{
-              // alert(Realm.defaultPath); 
-              let  List = realm.objects('Title_Demo');
+    // }
+    
 
+    // componentDidUpdate(){
+    //   console.log(" Did update")
+    // }
+    // componentWillUnmount(){
+    //   console.log(" will unMount")
+    // }
 
-              let a = realm.objects(Note);
-              // console.log(a)
-             this.setState({
-                AllList :List,
-                refreshing:false
-            });
-
-            });
-          }).catch(error => {
-            alert(error);
-            
-          });
-    }
+    
 
 
   render() {
-    console.log(this.state.AllList)
+
+    // console.log(this.props.list.item.notes)
     return (
-      <Content   
-        /* refreshControl = {
-            <RefreshControl
-                refreshing = {this.state.refreshing} 
-                onRefresh = {this.connectionData.bind(this)}
-                />
-                }  */  >
-                {(this.state.AllList.length >0)?  
+     
+      (this.props.list.length > 0)?  
               
               <FlatList
-                data = {this.state.AllList}
-                extraData ={this.state.AllList}
+                data = {this.props.list}
+                extraData ={this.props.list}
                 keyExtractor = {item => {item.id}} 
-                renderItem ={(item) =>  <ListItem list={item} onPress={this.props.onPress} /> }
-                inverted ={ true}               
-                refreshing = {this.state.refreshing}
+                renderItem ={(item) =>  <ListItem list={item} onPress={this.props.onPress} onRefresh={this.props.onRefresh} /> }
+                inverted ={ true} 
+                // onRefresh = {this.props.onRefresh()}              
+                // refreshing = {this.props.refreshing}
                 scrollEnabled ={true}
          
                 />
-                :
-                <Text>No Note availabel</Text>
-                } 
-           
-        </Content>
-         
+      :
+              <Text> Data not found</Text> 
     )
   }
 }

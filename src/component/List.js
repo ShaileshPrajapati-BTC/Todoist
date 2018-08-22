@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { TouchableOpacity,View,Alert } from 'react-native'
+import { TouchableOpacity,View,Alert,ToastAndroid } from 'react-native'
 import styles from "./Css/CssForAl"
 import Title from './Title'
 import SubTitle from './SubTitle'
@@ -15,6 +15,19 @@ export class ListItem extends Component {
         super(props);
     }
 
+    DeleteOkButton(list){
+        Realm.open({
+            schema:[NoteTitle,Note]
+        }).then(realm => {
+            realm.write(() =>   { 
+                realm.delete(list.item.notes);
+                realm.delete(list.item)
+                ToastAndroid.show('Note deleted successfully...', ToastAndroid.SHORT);
+                this.props.onRefresh()
+            });
+        });
+    }
+
     DeleteNote =(list) => {
         Alert.alert(
             "Delete Note",
@@ -24,89 +37,47 @@ export class ListItem extends Component {
                     
                 } , style :'cancel'},
                 {text : "OK" , onPress : () => {
-                    
-                    // alert(JSON.stringify(id))
-                    Realm.open({
-                        schema:[NoteTitle,Note]
-                        }).then(realm => {
-                        realm.write(() =>   { 
-                            
-                            realm.delete(realm.objectForPrimaryKey(NoteTitle,list.item.id));
-                            ToastAndroid.show('Note deleted successfully...', ToastAndroid.SHORT);
-
-                            // list.item.notes.map((item) =>{
-                            //     let i = Number(item.id)
-                            //     console.log(i)
-                            //     realm.delete(realm.objectForPrimaryKey(Note,i));
-                            //     // ToastAndroid.show('Note deleted successfully...', ToastAndroid.SHORT);
-
-
-                            // })
-                            
-
-                            // for (id in list.item.notes){
-                            //     console.log("&&&&&&&&&&",list.item.notes[id].id)
-                                
-                            // }
-
-
-                            console.log(realm.objects(Note))
-
-                            // alert(JSON.stringify(d))
-                            // alert("HELLO")
-
-                        });
-                    });
-                  
+                        this.DeleteOkButton(list);  
                     }, 
                 }
-
             ]
         )
-        {cancelable : true }   
-        
-
+        {cancelable : true }  
     }
 
-    componentWillMount(){
-        // console.log(this.props.list);
-    }
-    componentDidMount(){
-        // alert(JSON.stringify(this.props.list))
-        // console.log("=----------------===================",this.props.list);
-    }
-  render() {
+    
+    render() {
       let list = this.props.list
+      console.log(this.props.list)
+        return (
+            <TouchableOpacity 
+                style ={styles.row}
+                onPress = {() =>{ this.props.onPress.navigate("Form",{
+                        // ssdata : this.props.list.title,
+                        titleId:this.props.list,
+                        onGoBack :() => this.props.onRefresh(),
+                        // HEllo :this.props.list.notes,
+                      
+                        title : "Edit note",
+                        flag:'editTodo'
+                    });
+                }}
+                >
+                <View style={{flex:1,flexDirection:'row'}}>
+                    <Title style ={styles.row} title={list.item.title}></Title>
+                    <SubTitle style={styles.subTitle} sub={list.item.notes}></SubTitle>
 
-    return (
-        <TouchableOpacity 
-            style ={styles.row}
-            onPress = {() =>{ this.props.onPress.navigate("Form",{
-                    // ssdata : this.props.list.title,
-                    titleId:this.props.list,
-                    
-                    // HEllo :this.props.list.notes,
-                    
-                    title : "Edit note",
-                    flag:'editTodo'
-                });
-            }}
-            >
-            <View style={{flex:1,flexDirection:'row'}}>
-                <Title style ={styles.row} title={list.item.title}></Title>
-                <SubTitle style={styles.subTitle} sub={list.item.notes}></SubTitle>
-
-            </View>
-            <View style={styles.trash_Icon}>
-                <IconButton  
-                name="trash" 
-                onPress={() => {this.DeleteNote(list)}}
-                />
-            </View>
+                </View>
+                <View style={styles.trash_Icon}>
+                    <IconButton  
+                    name="trash" 
+                    onPress={() => {this.DeleteNote(list)}}
+                    />
+                </View>
+                
+            </TouchableOpacity>
             
-        </TouchableOpacity>
-        
-    )
+        )
   }
 }
 

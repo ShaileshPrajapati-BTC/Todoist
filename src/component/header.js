@@ -13,7 +13,7 @@ export class Allheader extends Component {
     return (
     <Header>
         <Left>             
-            <IconButton onPress={() =>  this.props.onPress.navigate('DrawerOpen')} name="menu"  />
+            <IconButton onPress={() =>  this.props.onPress.openDrawer()} name="menu"  />
         </Left>
         <Body>
             <Title>Home</Title>

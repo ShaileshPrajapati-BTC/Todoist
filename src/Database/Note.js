@@ -5,7 +5,7 @@ Note_Demo.schema = {
     name: 'Note_Demo',
     primaryKey: 'id',
     properties :{ 
-        id : 'int', 
+        id : 'int'  , 
         note : {type:'string',default:""},
         createDate :{type:'string',default:""},
         // editDate : {type:'string',default:""},

@@ -122,24 +122,28 @@ export class CreateForm extends Component {
     }).then(realm => {
     realm.write(() =>{
       const l = realm.objects(NoteTitle)
+      
       let n =realm.objects(Note)
-      let t = realm.create(NoteTitle,{
-          id:l.length+1,
-          title:this.state.title,
-          createDate:new Date().toString(),
-          notes :this.state.ViewArray.map(
-            (item,key) =>{
-              return({
-                id:parseInt(n.length+item.Array_Value_Index+1),
-                note :item.note,
-                createDate : new Date().toString()               
-              })
-            }
-          )    
-      });
+      alert(n.length)
+      
+      // let t = realm.create(NoteTitle,{
+      //   id:l.length+1,
+      //   title:this.state.title,
+      //   createDate:new Date().toString(), 
+      //   notes :this.state.ViewArray.map(
+      //     (item,key) =>{
+      //       console.log(key)
+      //       return({
+      //           id:n.length+key+1,
+      //           note :item.note,
+      //           createDate : new Date().toString()               
+      //         })
+      //       }
+          // )    
+      // });
     });
-    ToastAndroid.show('Note added successfully...', ToastAndroid.SHORT);
-    this.props.navigation.goBack( this.componentWillMount);
+    this.props.navigation.state.params.onGoBack()
+    this.props.navigation.goBack();
    }).catch(e =>{
      alert(e);      
    });     
@@ -160,7 +164,7 @@ export class CreateForm extends Component {
                   useNativeDriver:true
                 }
             ).start(() => 
-              {
+              { 
                 this.Array_Value_Index = this.Array_Value_Index + 1;
                 // value=''
                 /* this.setState({ Disable_Button : false}); */
@@ -201,8 +205,9 @@ export class CreateForm extends Component {
     Realm.open({
       schema:[NoteTitle,Note]
       }).then(realm => {
-      realm.write(() =>{ 
+      realm.write(() =>{
         // alert(JSON.stringify(this.state.obj))
+        let n = realm.objects(Note)
         let t = realm.create(NoteTitle,{
           id:this.state.obj.item.id,
           title:this.state.title,
@@ -210,7 +215,7 @@ export class CreateForm extends Component {
           notes :this.state.ViewArray.map(
             (item,key) =>{
               return({
-                id:item.id,
+                id:(item.id == null)?n[n.length-1].id+item.Array_Value_Index+1 : item.id,
                 note :item.note,
                 editDate : new Date().toString()               
               })
@@ -219,6 +224,7 @@ export class CreateForm extends Component {
           },true);
       });
       alert("Note updated...")
+      this.props.navigation.state.params.onGoBack()
       this.props.navigation.goBack();
     }).catch(e =>{
       alert(e);      
@@ -226,20 +232,90 @@ export class CreateForm extends Component {
   }
 
 
-  HandleValue = (text,id) =>{ 
-    console.warn(id,"================&",text)
+ 
+
+  HandleValue = (text,id,key) =>{ 
+    console.log(key,"================&",id)
     for(var i=0;i<this.state.ViewArray.length ; i++  ){
+
+
+
       if(this.state.ViewArray[i].id === id){          
         let demoView = [...this.state.ViewArray];
           let index = demoView.findIndex(notes  => notes.id === id);
+          console.log("############################################",index)
           demoView[index] = {...demoView[index],note : text};
           this.setState ({ViewArray : demoView});
         }else{
+          
           // console.log(JSON.stringify(this.state.demoView))
+          // Realm.open({
+          //   schema:[NoteTitle,Note]
+          //   }).then(realm => {
+          //   realm.write(() =>{ 
+          //     // alert(JSON.stringify(this.state.obj))
+          //     let n = realm.objects(Note)
+          //     this.state.ViewArray.push({
+          //       id:n[n.length-1].id+1,
+          //       note :text,
+          //       createDate : new Date().toString()
+          //     })
+          //   });
+          //   this.props.navigation.goBack();
+          // }).catch(e =>{
+          //   alert(e);      
+          // });
+
         }
     }
   };
 
+
+  DeleteTask = (id,key) =>{
+
+    console.log(id,"********************************************8",key)
+    if(id != null){
+      // alert("Hello")
+      Realm.open({
+        schema:[NoteTitle,Note]
+      }).then(realm => {
+        realm.write(() =>  {
+          
+            realm.delete(realm.objects(Note).filtered(`id == ${id}`));
+            // let a= realm.objects(Note).filtered(`id == ${id}`)
+            // console.log(JSON.stringify(a))
+            // realm.delete(list.item)
+            // ToastAndroid.show('Note deleted successfully...', ToastAndroid.SHORT);
+            
+            // ToastAndroid.show('Task deleted successfully...', ToastAndroid.SHORT);
+            
+            var arr = this.state.ViewArray
+            let index = arr.filter(item => item.id===id)
+            console.log(index)
+            arr.splice(index,1)        
+            this.setState({
+              ViewArray : this.state.ViewArray
+            })
+            
+
+            // console.log(realm.objects(Note))
+              // this.props.navigation.state.params.onGoBack()
+              // this.props.onGoBack()
+              
+          });
+      });
+    }else{
+
+       var a =this.state.ViewArray
+       var index = a.indexOf(key)
+       console.log(index)
+       a.splice(index,1)
+      console.log(key)
+       this.setState({
+        ViewArray : a
+      })
+    }
+  }
   
   render() {  
     let Rander_Animated_View = this.state.ViewArray.map(
@@ -249,9 +325,9 @@ export class CreateForm extends Component {
               key ={key}
               id ={item.id} 
               style={design} 
-              onChangeText = {(text,id) =>{(this.state.flage==='editTodo')?this.HandleValue(text,id):item.note =text}}
+              onChangeText = {(text,id,key) =>{(this.state.flage==='editTodo')?this.HandleValue(text,id,key):item.note =text}}
               value ={item.note }
-                      onChange = {this.onChange}
+              onPress = {(id)=> this.DeleteTask(id,key)}
               />
             )
           }
@@ -270,7 +346,7 @@ export class CreateForm extends Component {
           <View style={{height:60}}>
             <TextInput 
               style={design.titleText} 
-              placeholder="title" 
+              placeholder="Title" 
               onChangeText= {(title)=> this.setState({title})}
               value = {this.state.title}
               /> 

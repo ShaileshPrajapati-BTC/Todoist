@@ -1,4 +1,4 @@
-import {StackNavigator,DrawerNavigator} from 'react-navigation'
+import {createStackNavigator,createDrawerNavigator} from 'react-navigation'
 import  HomeScreen  from './HomeScreen';
 import CreateForm from './SecondScreen/CreateForm'
 import DrawerView from './DrawerView'
@@ -22,7 +22,7 @@ const ContentDrawer = (props) => (
     </Container>
 
 )
-const Navigation =StackNavigator(
+const Navigation = createStackNavigator(
     {
         Home:{ screen:HomeScreen,
             navigationOptions:{
@@ -41,10 +41,12 @@ const Navigation =StackNavigator(
         InitialRouteName : 'Home',
         mode : 'card',
         headerMode: 'float',
+       
+               
     }    
 );
 
-const RootDrawer = DrawerNavigator(
+const RootDrawer = createDrawerNavigator(
     {
         Home:{
             screen:Navigation,
@@ -56,7 +58,7 @@ const RootDrawer = DrawerNavigator(
     },{
         // mode : "modal",
         headerMode: 'float',
-        // contentComponent : ContentDrawer,
+        // contentComponent : ContxentDrawer(props),
         drawerPosition : "left",
         drawerOpenRoute : 'DrawerOpen',
         drawerCloseRoute : 'DrawerClose',

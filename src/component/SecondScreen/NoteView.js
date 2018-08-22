@@ -10,9 +10,9 @@ export class NoteView extends Component {
         super(props);
         this.state={
             note:props.value,
-            status:true,
+            status:false,
             id : this.props.id,
-            key : props.key
+            key : this.props.key
             // note : this.props.value,
         }
 
@@ -28,11 +28,7 @@ export class NoteView extends Component {
     // }
 
    
-    dataTransfer = (text) => {
-        this.setState({
-          state : text,  
-        })
-    }
+  
 
     //    a = ()=>{
     //         this.state.status=false,
@@ -58,10 +54,11 @@ export class NoteView extends Component {
                 />
             <TextInput 
                 style={this.props.style.noteText} 
-                placeholder="Enter Notes"
-                multiline={true} 
+                placeholder={"Enter Notes"}
+                // multiline={true} 
+                returnKeyType={'done'}
                 // onChange ={this.props.onChange}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ge(this.state.note)}
-                onChangeText ={(text) => {this.props.onChangeText(text,this.props.id)}}
+                onChangeText ={(text) => {this.props.onChangeText(text,this.props.id,this.props.key)}}
                 // onChange ={() => this.setState({note : this.note})}
 
                 // onChangeText = {this.dataTransfer}
@@ -79,8 +76,8 @@ export class NoteView extends Component {
 
                 >{this.state.note}</TextInput>
             <IconButton 
-                name="add" 
-                onPress={() => {this.props.onPress(this.state.note)}}
+                name="close" 
+                onPress={() => {this.props.onPress(this.props.id,this.props.key)}}
                 />
       </ListItem>
     )
